@@ -1,3 +1,7 @@
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
 from flask import (
     Flask,
     redirect,
@@ -13,16 +17,21 @@ from datetime import datetime, timedelta
 import hashlib
 from werkzeug.utils import secure_filename
 
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME =  os.environ.get("DB_NAME")
+
+client = MongoClient(MONGODB_URI)
+db = client[DB_NAME]
+
 app=Flask(__name__)
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['UPLOAD_FOLDER'] = './static/profile_pics'
 
 SECRET_KEY = 'SPARTA'
-
-MONGODB_CONNECTION_STRING = "mongodb+srv://sifamuyas:Cala123098@project1.8totzhe.mongodb.net/?retryWrites=true&w=majority&appName=Project1"
-client = MongoClient(MONGODB_CONNECTION_STRING)
-db = client.dbsparta_plus_week4
 
 TOKEN_KEY = 'mytoken'
 
